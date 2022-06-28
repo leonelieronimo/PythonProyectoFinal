@@ -4,10 +4,10 @@
 
 <h2>Informacion de usuarios.</h2>
 <hr></hr>
-<p><h4>Nombre: {{ profile.nombre }}</h4></p>
-<p><h4>Descripcion: {{ profile.descripcion }}</h4></p>
-<p><h4>Email: {{ profile.email }}</h4></p>
-<p><h4>Imagen: {{ profile.image }} <img height="160px" src="{{url}}" alt=""> </h4></p>
-<p><h4>Link: {{ profile.link }}</h4></p>
+<p>Nombre: {{ profile.nombre }}</p>
+<p>Descripcion: {{ profile.descripcion }}</p>
+<p>Email: {{ profile.email }}</p>
+<p>Imagen: {{ profile.image }} <img height="160px" src="{{url}}" alt="Imagen del autor"></p>
+<span>Link: </span><a style="color: rgb(0, 0, 190);" href="{{ profile.link }}">{{ profile.link }}</a>
 <p><a class="btn2 btn-primary" href="{% url 'app_coder:profile-list' %}">Regresar a la lista de Perfiles</a></p>
 {% endblock %}

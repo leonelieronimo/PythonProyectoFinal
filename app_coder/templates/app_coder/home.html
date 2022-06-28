@@ -31,7 +31,7 @@
     <li>
             <a href="{% url 'app_coder:blog-detail' blog.id %}">
                 <span style="color: rgb(0, 0, 190);"> {{blog.title}}</span>
-            </a>--creado por {{blog.autorName}}
+            </a>--Posteado por {{blog.autorName}} {{blog.autorSurname}} el {{blog.fecha}} 
     </li>
     {% endfor %}
 </ul>
