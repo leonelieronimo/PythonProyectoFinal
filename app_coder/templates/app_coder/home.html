@@ -10,7 +10,7 @@
     <img height="160px" src="{{url}}" alt="">
 </div>
 {% endif %}
-<h2>Buscador de cursos</h2>
+<h2>Buscador de Blogs</h2>
 <hr>
 </hr>
 
@@ -26,15 +26,15 @@
 </hr>
 
 
-{% if courses %}
 <ul>
-    {% for course in courses %}
+    {% for blog in blogs %}
     <li>
-        Curso: {{course.name}}
-        -- Camada: {{course.code}}
+            <a href="{% url 'app_coder:blog-detail' blog.id %}">
+                <span style="color: rgb(0, 0, 190);"> {{blog.title}}</span>
+            </a>--creado por {{blog.autorName}}
     </li>
     {% endfor %}
 </ul>
-{% endif %}
+
 
 {% endblock %}

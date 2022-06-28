@@ -1,0 +1,36 @@
+{% extends "app_coder/index.html" %}
+{% load static %}
+{% block app_coder_content %}
+
+<h2>Lista de Blogs</h2>
+{% if user.is_authenticated %}
+<a class="card_custom" href="{% url 'app_coder:blog-add' %}">Crear nuevo Blog</a>
+{% endif %}
+<hr></hr>
+{% if blog_list.count > 0 %}
+<ul>
+    {% for blog in blog_list %}
+    <li>
+        <span>{{blog.title}} creado por {{blog.autorName}}. Publicado el: {{blog.fecha}}</span>
+        (
+            <a href="{% url 'app_coder:blog-detail' blog.id %}">
+                <i class="fa fa-eye" style="color: rgb(0, 0, 255);"> </i>
+            </a>
+        {% if user.is_authenticated %}
+        |
+        <a href="{% url 'app_coder:blog-update' blog.id %}">
+            <i class="fa fa-pencil" style="color: rgb(0, 0, 190);"> </i>
+        </a>
+        |
+        <a href="{% url 'app_coder:blog-delete' blog.id %}">
+            <i class="fa fa-trash" style="color: rgb(0, 0, 100);"> </i>
+        </a>
+        {% endif %}
+        )
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+    <p>No hay blogs cargados aún</p>
+{% endif %}
+{% endblock %}

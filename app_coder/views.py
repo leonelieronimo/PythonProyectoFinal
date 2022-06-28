@@ -5,27 +5,63 @@ from django.shortcuts import render
 from django.db.models import Q
 from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
+from asyncore import read
+from datetime import datetime
+from multiprocessing import context
+from django.http import HttpResponse
+from django.template import Template, Context
+from django.template import loader
 
-from app_coder.models import Course, Student, Profesor, Homework, Avatar
-from app_coder.forms import CourseForm, ProfesorForm, HomeworkForm, AvatarForm
+from app_coder.models import Course, Student, Profesor, Homework, Avatar, Blog, Profile
+from app_coder.forms import CourseForm, ProfesorForm, HomeworkForm, AvatarForm, ProfileForm, BlogForm
 
 from django.contrib import messages
 
 
 def index(request):
+    blogs = Blog.objects.all()
+    
     avatar_ctx = get_avatar_url_ctx(request)
-    context_dict = {**avatar_ctx}
+    context_dict = {**avatar_ctx, 'blogs': blogs}
+
     return render(
         request=request,
         context=context_dict,
         template_name="app_coder/home.html"
     )
 
+def about_us(request):
+    return render(request, 'app_coder/about_us.html')
+
+def error(request):
+    return render(request, 'app_coder/error.html')
+
+def imagen_profile(request):
+    profile_ctx = get_profile_url_ctx(request)
+    context_dict = {**profile_ctx}
+
+    return render(
+    request=request,
+    context=context_dict,
+    template_name="app_coder/profile_detail.html"
+    )
 
 def get_avatar_url_ctx(request):
     avatars = Avatar.objects.filter(user=request.user.id)
     if avatars.exists():
         return {"url": avatars[0].image.url}
+    return {}
+
+def get_profile_url_ctx(request):
+    profiles = Profile.objects.filter(user=request.user.id)
+    if profiles.exists():
+        return {"url": profiles[0].image.url}
+    return {}
+
+def get_blog_url_ctx(request):
+    blogs = Blog.objects.filter(user=request.user.id)
+    if blogs.exists():
+        return {"url": blogs[0].image.url}
     return {}
 
 def profesors(request):
@@ -278,11 +314,11 @@ def search(request):
     context_dict = {**avatar_ctx}
     if request.GET['all_search']:
         search_param = request.GET['all_search']
-        query = Q(name__contains=search_param)
-        query.add(Q(code__contains=search_param), Q.OR)
-        courses = Course.objects.filter(query)
+        query = Q(title__contains=search_param)
+        query.add(Q(autorName__contains=search_param), Q.OR)
+        blogs = Blog.objects.filter(query)
         context_dict.update({
-            'courses': courses
+            'blogs': blogs
         })
     return render(
         request=request,
@@ -290,12 +326,57 @@ def search(request):
         template_name="app_coder/home.html",
     )
 
+
+
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+class BlogListView(ListView):
+    model = Blog
+    template_name = "app_coder/blog_list.html"
+
+class BlogDetailView(DetailView):
+    model = Blog
+    template_name = "app_coder/blog_detail.html"
+
+class BlogCreateView(LoginRequiredMixin, CreateView):
+    model = Blog
+    success_url = reverse_lazy('app_coder:blog-list')
+    fields = ['title', 'subTitle','autorName','autorSurname', 'fecha', 'cuerpo', 'image']
+
+class BlogUpdateView(LoginRequiredMixin, UpdateView):
+    model = Blog
+    success_url = reverse_lazy('app_coder:blog-list')
+    fields = ['title', 'subTitle','autorName','autorSurname', 'fecha', 'cuerpo', 'image']
+
+class BlogDeleteView(LoginRequiredMixin, DeleteView):
+    model = Blog
+    success_url = reverse_lazy('app_coder:blog-list')
+
+class ProfileListView(ListView):
+    model = Profile
+    template_name = "app_coder/profile_list.html"
+
+class ProfileDetailView(DetailView):
+    model = Profile
+    template_name = "app_coder/profile_detail.html"
+
+class ProfileCreateView(LoginRequiredMixin, CreateView):
+    model = Profile
+    success_url = reverse_lazy('app_coder:profile-list')
+    fields = ['nombre', 'descripcion', 'email', 'image', 'link']
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = Profile
+    success_url = reverse_lazy('app_coder:profile-list')
+    fields = ['nombre', 'descripcion', 'email', 'image', 'link']
+
+class ProfileDeleteView(LoginRequiredMixin, DeleteView):
+    model = Profile
+    success_url = reverse_lazy('app_coder:profile-list')
 
 class CourseListView(ListView):
     model = Course
@@ -431,4 +512,54 @@ def avatar_load(request):
         request=request,
         context={"form": form},
         template_name="app_coder/avatar_form.html",
+    )
+
+@login_required
+def profile_load(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES)
+        if form.is_valid  and len(request.FILES) != 0:
+            image = request.FILES['image']
+            profiles = Profile.objects.filter(user=request.user.id)
+            if not profiles.exists():
+                profile = Profile(user=request.user, image=image)
+            else:
+                profile = profile[0]
+                if len(profile.image) > 0:
+                    os.remove(profile.image.path)
+                profile.image = image
+            profile.save()
+            messages.success(request, "Imagen cargada exitosamente")
+            return redirect('app_coder:Home')
+
+    form= ProfileForm()
+    return render(
+        request=request,
+        context={"form": form},
+        template_name="app_coder/profile_form.html",
+    )
+
+@login_required
+def blog_load(request):
+    if request.method == 'POST':
+        form = BlogForm(request.POST, request.FILES)
+        if form.is_valid  and len(request.FILES) != 0:
+            image = request.FILES['image']
+            blogs = Blog.objects.filter(user=request.user.id)
+            if not blogs.exists():
+                blog = Blog(user=request.user, image=image)
+            else:
+                blog = blog[0]
+                if len(blog.image) > 0:
+                    os.remove(blog.image.path)
+                blog.image = image
+            blog.save()
+            messages.success(request, "Imagen cargada exitosamente")
+            return redirect('app_coder:Home')
+
+    form= BlogForm()
+    return render(
+        request=request,
+        context={"form": form},
+        template_name="app_coder/blog_form.html",
     )

@@ -1,0 +1,16 @@
+{% extends "app_coder/main.html" %}
+{% load static %}
+{% block app_coder_content %}
+
+<h2>{{ blog.title }}</h2>
+<hr></hr>
+<h3>{{ blog.subTitle }}</h3>
+<hr>
+<p><h4>Nombre: {{ blog.autorName }}</h4></p>
+<p><h4>Apellido: {{ blog.autorSurname }}</h4></p>
+<p><h4>Cuerpo: {{ blog.cuerpo }}</h4></p>
+<p><h4>Posteado: {{ blog.fecha }}</h4></p>
+<p><a class="btn2 btn-primary" href="{% url 'app_coder:blog-list' %}">Regresar a la lista de blogs</a></p>
+<img height="160px" src="{{url}}" alt="">
+
+{% endblock %}

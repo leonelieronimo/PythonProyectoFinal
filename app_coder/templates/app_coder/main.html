@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-
+        
         {% load static %}
-
+        
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
@@ -26,8 +26,6 @@
             <div class="container">
                 <a class="navbar-brand" href="{% url 'app_coder:Home' %}">Home</a>
                 <a class="navbar-brand" href="{% url 'app_coder:blog-list' %}">Blogs</a>
-                <a class="navbar-brand" href="{% url 'app_coder:profile-list' %}">Profiles</a>
-                <a class="navbar-brand" href="{% url 'app_coder:about-us' %}">Sobre Nosotros</a>
                 {% if user.is_authenticated %}
                 <a class="btn btn-secondary" href="{% url 'app_coder:user-update' %}">Editar usuario</a>
                 <a class="btn btn-primary" href="{% url 'app_coder:user-logout' %}">Cerrar Sesión</a>
@@ -43,12 +41,11 @@
                     <div class="col-xl-6">
                         <div class="text-center text-white">
                             <!-- Page heading-->
-                            <h1 class="mb-5">Este es nuestro Playground Avanzado <br> Django-CoderHouse</h1>
                             {% if messages %}
                                 {% for message in messages %}
                                 <h4><p style="color: rgb(131, 31, 0)" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p></h4>
                                 {% endfor %}
-                            {% endif %}
+                                {% endif %}
                             <div class="text-lg-start text-white">
 
                                 {% block app_coder_content %}
@@ -66,26 +63,26 @@
                 <div class="row">
                     <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
                         <ul class="list-inline mb-2">
-                            <li class="list-inline-item"><a href="{% url 'app_coder:error' %}">About</a></li>
+                            <li class="list-inline-item"><a href="#!">About</a></li>
                             <li class="list-inline-item">⋅</li>
-                            <li class="list-inline-item"><a href="{% url 'app_coder:error' %}">Contact</a></li>
+                            <li class="list-inline-item"><a href="#!">Contact</a></li>
                             <li class="list-inline-item">⋅</li>
-                            <li class="list-inline-item"><a href="{% url 'app_coder:error' %}">Terms of Use</a></li>
+                            <li class="list-inline-item"><a href="#!">Terms of Use</a></li>
                             <li class="list-inline-item">⋅</li>
-                            <li class="list-inline-item"><a href="{% url 'app_coder:error' %}">Privacy Policy</a></li>
+                            <li class="list-inline-item"><a href="#!">Privacy Policy</a></li>
                         </ul>
                         <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2022. All Rights Reserved.</p>
                     </div>
                     <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
                         <ul class="list-inline mb-0">
                             <li class="list-inline-item me-4">
-                                <a href="{% url 'app_coder:error' %}"><i class="bi-facebook fs-3"></i></a>
+                                <a href="#!"><i class="bi-facebook fs-3"></i></a>
                             </li>
                             <li class="list-inline-item me-4">
-                                <a href="{% url 'app_coder:error' %}"><i class="bi-twitter fs-3"></i></a>
+                                <a href="#!"><i class="bi-twitter fs-3"></i></a>
                             </li>
                             <li class="list-inline-item">
-                                <a href="{% url 'app_coder:error' %}"><i class="bi-instagram fs-3"></i></a>
+                                <a href="#!"><i class="bi-instagram fs-3"></i></a>
                             </li>
                         </ul>
                     </div>

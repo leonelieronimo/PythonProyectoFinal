@@ -1,9 +1,18 @@
 from django import forms
 from django.forms import ModelForm
-from app_coder.models import Avatar, Profesor
+from app_coder.models import Avatar, Profesor, Blog, Profile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
+class ProfileForm(ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('image', )
+
+class BlogForm(ModelForm):
+    class Meta:
+        model = Blog
+        fields = ('image', )
 
 class CourseForm(forms.Form):
     name = forms.CharField(max_length=40, min_length=3, label='Nombre')
@@ -64,3 +73,4 @@ class AvatarForm(ModelForm):
     class Meta:
         model = Avatar
         fields = ('image', )
+

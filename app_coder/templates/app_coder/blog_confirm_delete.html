@@ -1,0 +1,16 @@
+{% extends "app_coder/index.html" %}
+{% load static %}
+{% block app_coder_content %}
+
+<h2>Eliminar Blog</h2>
+<hr></hr>
+
+<p>Estás seguro de eliminar el Blog: {{ blog.title }}?</p>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <input class="btn2 btn-warning" type="submit" value="Si, eliminar.">
+    <a class="btn2 btn-primary" href="{% url 'app_coder:blog-list' %}" >Cancelar</a>
+</form>
+
+{% endblock %}
