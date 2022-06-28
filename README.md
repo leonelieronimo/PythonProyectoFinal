@@ -1,5 +1,5 @@
 # Este proyecto fue creado por Leonel Aguero y Leonel Ieronimo. El proyecto consiste en que el usuario pueda crear, editar y/o eliminar los blogs siempre y cuando este logueado en la web. En caso que no lo esté solo podra leerlos. Lo mismo pasa con los profiles. En caso que se quieran acceder a links que no estan terminados se respondera con un template "error.html" que muestra un mensaje diciendo que la pagina esta en desarrollo asi no quedan links vacios que no llevan a ningun lado
-
+ Link a Google Drive con el video explicativo: https://drive.google.com/drive/folders/1FbvVuJwnZKLuhfrmAICuZh7nVo-XoyZu?usp=sharing
 
 
 
